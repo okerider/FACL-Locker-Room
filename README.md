@@ -19,6 +19,3 @@ with message: Account already exist
 - Check the /account/ folder for any matching account
 - Return the data contained in the file, matching the payload that
 was saved
-
-
-### Developed on a Sunday Morning - 2hrs
