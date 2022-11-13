@@ -12,8 +12,9 @@ namespace FACL_Locker_Room_API.Controllers
     public class LockersController : ControllerBase
     {
         // Created a model called: Locker in Models folder for user data
-        public static Locker locker = new Locker();
-        private IWebHostEnvironment webHostEnvironment;
+        //public static Locker locker = new Locker(); // Removed because it wasn't thread safe
+
+        private readonly IWebHostEnvironment webHostEnvironment; // added readonly
         private readonly IConfiguration _configuration;
 
         public LockersController(IWebHostEnvironment environment, IConfiguration configuration)
@@ -37,18 +38,12 @@ namespace FACL_Locker_Room_API.Controllers
         [HttpPost("CreateAccount")]
         public IActionResult CreateAccount([FromForm] Locker request)
         {
-            locker.FirstName = request.FirstName;
-            locker.LastName = request.LastName;
-            locker.DateOfBirth = request.DateOfBirth;
-            locker.Gender = request.Gender;
-            locker.Nationality = request.Nationality;
-
-
+            
             // Generate the json string.
-            string json = Newtonsoft.Json.JsonConvert.SerializeObject(locker, Newtonsoft.Json.Formatting.Indented);
+            string json = Newtonsoft.Json.JsonConvert.SerializeObject(request, Newtonsoft.Json.Formatting.Indented);
 
             // create path accounts/[first-name]-[last-name].json
-            string path = Path.Combine(webHostEnvironment.ContentRootPath, "accounts/" + locker.FirstName + locker.LastName + ".json");
+            string path = Path.Combine(webHostEnvironment.ContentRootPath, "accounts/" + request.FirstName + request.LastName + ".json");
 
             //check if file alredy created or exists
 
